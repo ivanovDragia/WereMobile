@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">WereMobile</string>
+    <string name="products">Products</string>
+    <string name="lots">Lots</string>
+    <string name="contragents">Contragents</string>
+    <string name="documents">Documents</string>
+    <string name="create_document">Create Document</string>
+    <string name="settings">Settings</string>
+    <string name="sync">Sync</string>
+    <string name="were_mobile">Were Mobile</string>
+    <string name="logo">LOGO</string>
+    <string name="last_sync">Last sync:</string>
+    <string name="noText"></string>
+    <string name="new_setting">New Setting</string>
+    <string name="add_setting">Add Setting</string>
+    <string name="description">Description...</string>
+    <string name="setting_value">Setting Value...</string>
+    <string name="setting_name">Setting Name...</string>
+
+</resources>

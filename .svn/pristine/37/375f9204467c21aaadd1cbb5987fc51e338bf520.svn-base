@@ -1,0 +1,81 @@
+package com.leetsoft.weremobile.database;
+
+/**
+ * Created by Georgi Shukov on 23.11.2020 г..
+ */
+public class DocumentRows {
+    int id;
+    int product_id;
+    int lot_id;
+    double quantity;
+    double sum;
+    int document_id;
+
+    public DocumentRows() {
+    }
+
+    public DocumentRows(int product_id, int lot_id, double quantity, double sum, int document_id) {
+        this.product_id = product_id;
+        this.lot_id = lot_id;
+        this.quantity = quantity;
+        this.sum = sum;
+        this.document_id = document_id;
+    }
+
+    public DocumentRows(int id, int product_id, int lot_id, double quantity, double sum, int document_id) {
+        this.id = id;
+        this.product_id = product_id;
+        this.lot_id = lot_id;
+        this.quantity = quantity;
+        this.sum = sum;
+        this.document_id = document_id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
+    }
+
+    public int getLot_id() {
+        return lot_id;
+    }
+
+    public void setLot_id(int lot_id) {
+        this.lot_id = lot_id;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getSum() {
+        return sum;
+    }
+
+    public void setSum(double sum) {
+        this.sum = sum;
+    }
+
+    public int getDocument_id() {
+        return document_id;
+    }
+
+    public void setDocument_id(int document_id) {
+        this.document_id = document_id;
+    }
+}

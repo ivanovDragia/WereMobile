@@ -1,0 +1,72 @@
+package com.leetsoft.weremobile.database;
+
+import java.sql.Timestamp;
+
+/**
+ * Created by Georgi Shukov on 23.11.2020 г..
+ */
+public class Lots {
+    int id;
+    String lot_number;
+    int product_id;
+    double quantity;
+    Timestamp expiration_date;
+
+    public Lots() {
+    }
+
+    public Lots(String lot_number, int product_id, double quantity, Timestamp expiration_date) {
+        this.lot_number = lot_number;
+        this.product_id = product_id;
+        this.quantity = quantity;
+        this.expiration_date = expiration_date;
+    }
+
+    public Lots(int id, String lot_number, int product_id, double quantity, Timestamp expiration_date) {
+        this.id = id;
+        this.lot_number = lot_number;
+        this.product_id = product_id;
+        this.quantity = quantity;
+        this.expiration_date = expiration_date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLot_number() {
+        return lot_number;
+    }
+
+    public void setLot_number(String lot_number) {
+        this.lot_number = lot_number;
+    }
+
+    public int getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public Timestamp getExpiration_date() {
+        return expiration_date;
+    }
+
+    public void setExpiration_date(Timestamp expiration_date) {
+        this.expiration_date = expiration_date;
+    }
+}

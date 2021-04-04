@@ -1,0 +1,68 @@
+package com.leetsoft.weremobile;
+
+import android.app.Application;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public class CustomSettingsAdapter extends ArrayAdapter<Setting> {
+    private Context sContext;
+    private List<Setting> settingsList=new ArrayList<>();
+
+
+    public CustomSettingsAdapter(@NonNull Context context, ArrayList<Setting> list) {
+        super(context, 0, list);
+        sContext=context;
+        settingsList=list;
+
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+        View listItem=convertView;
+        if(listItem==null)
+            listItem= LayoutInflater.from(sContext).inflate(R.layout.custom_settings_row,parent,false);
+
+        Setting currentSetting=settingsList.get(position);
+
+        TextView name=listItem.findViewById(R.id.nameTextView);
+        name.setText(currentSetting.getName());
+
+        TextView value=listItem.findViewById(R.id.valueTextView);
+        value.setText(currentSetting.getValue());
+
+        TextView description=listItem.findViewById(R.id.descriptionTextView);
+        description.setText(currentSetting.getDescription());
+
+        Button deleteButton=listItem.findViewById(R.id.buttonDelete);
+        Button editButton=listItem.findViewById(R.id.buttonEdit);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(v.getContext().getFilesDir().getPath() + "/" + "settings.db", null);
+                db.delete("settings", "name=? and value=? and description=?", new String[]{currentSetting.getName(), currentSetting.getValue(), currentSetting.getDescription()});
+                //Toast.makeText(ShowDeleteActivity.this,"Task deleted successfully" + nameString+" "+dateString, Toast.LENGTH_SHORT).show();
+
+                db.close();
+            }
+        });
+
+        return listItem;
+    }
+}

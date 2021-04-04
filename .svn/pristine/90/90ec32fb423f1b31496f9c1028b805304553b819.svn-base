@@ -1,0 +1,98 @@
+package com.leetsoft.weremobile;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Dialog;
+import android.app.Notification;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.leetsoft.weremobile.adapters.CustomSettingsAdapter;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.Settings;
+
+import java.util.ArrayList;
+
+/**
+ * Created by Georgi Shukov on 20.11.2020 г..
+ */
+public class SettingsActivity extends AppCompatActivity {
+    Button btnAddSetting;
+    private CustomSettingsAdapter sAdapter;
+    private ListView settingsListView;
+
+    DatabaseHelper db = new DatabaseHelper(this);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+
+        ShowSettings();
+        btnAddSetting = findViewById(R.id.btnAddSetting);
+        btnAddSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCustomSettingDialog();
+            }
+        });
+    }
+
+    private void ShowSettings() {
+        String q;
+        settingsListView = findViewById(R.id.settingsListView);
+        ArrayList<Settings> listResults = db.getAllSettings();
+
+
+        sAdapter = new CustomSettingsAdapter(this, listResults);
+        settingsListView.setAdapter(sAdapter);
+    }
+
+    private void showCustomSettingDialog() {
+        final Dialog dialog = new Dialog(SettingsActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_settings_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+
+
+        final EditText nameEt = dialog.findViewById(R.id.editTextName);
+        final EditText valueEt = dialog.findViewById(R.id.editTextValue);
+        final EditText descriptionEt = dialog.findViewById(R.id.editTextDescription);
+        Button addSettingButton = dialog.findViewById(R.id.btnAddSetting);
+
+
+        addSettingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = nameEt.getText().toString().trim();
+                String value = valueEt.getText().toString().trim();
+                String description = descriptionEt.getText().toString().trim();
+                db.addSetting(new Settings(name, value, description));
+                //populateDB(name,value,description);
+                dialog.dismiss();
+                settingsListView.invalidate();
+
+            }
+        });
+        dialog.show();
+    }
+
+
+    //using for logo at top right corner
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+}

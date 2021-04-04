@@ -1,0 +1,119 @@
+package com.leetsoft.weremobile;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.leetsoft.weremobile.adapters.ContragentsAdapter;
+import com.leetsoft.weremobile.database.Contragents;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.Settings;
+
+import java.util.ArrayList;
+
+public class AddContragentActivity extends AppCompatActivity {
+    private static final String TAG = "AddContragentActivity";
+    TextView name;
+    TextView bullstat;
+    TextView VAT;
+    TextView city;
+    TextView address;
+    TextView MRP;
+    TextView phoneNumber;
+
+    Button addBtn;
+    ArrayList<Contragents> lookupArray;
+    DatabaseHelper db = new DatabaseHelper(this);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_edit_contragent);
+        Log.d(TAG, "onCreate: started.");
+
+        name=findViewById(R.id.addContragentNameET);
+        bullstat=findViewById(R.id.addContragentBullstatET);
+        VAT=findViewById(R.id.addContragentVatET);
+        city=findViewById(R.id.addContragentCityET);
+        address=findViewById(R.id.addContragentAddressET);
+        MRP=findViewById(R.id.addContragentMrpET);
+        phoneNumber=findViewById(R.id.addContragentPhoneNumberET);
+
+        addBtn=findViewById(R.id.addEditButton);
+        addBtn.setText("Add");
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lookupArray=db.getAllContragents();
+
+                String nameString=name.getText().toString().trim();
+                String bullstatString=bullstat.getText().toString().trim();;
+                String VATString=VAT.getText().toString().trim();;
+                String cityString=city.getText().toString().trim();;
+                String addressString=address.getText().toString().trim();;
+                String MRPString=MRP.getText().toString().trim();;
+                String phoneNumberString=phoneNumber.getText().toString().trim();;
+
+                Contragents input=new Contragents(nameString,bullstatString,
+                        VATString, cityString,
+                        addressString, MRPString,
+                        phoneNumberString);
+                int x=0;
+                for(int i=0;i<lookupArray.size();i++){
+                    if(bullstatString.equals(lookupArray.get(i).getBulstat())){
+                        x++;
+                    }
+                }
+
+                if(x>0){
+                    Toast.makeText(getApplicationContext(), "Bullstat already exists, use edit instead.", Toast.LENGTH_SHORT).show();
+                }else if((nameString.isEmpty() || nameString.length()>10)||(bullstatString.isEmpty() || bullstatString.length()>10)||(VATString.isEmpty() || VATString.length()>10)||
+                        (cityString.isEmpty() || cityString.length()>10)||(addressString.isEmpty()||addressString.length()>10)||(MRPString.isEmpty()||MRPString.length()>10)||
+                        (phoneNumberString.isEmpty()||phoneNumberString.length()>10)){
+                    Toast.makeText(getApplicationContext(), "Fields cannot be longer then 10 characters or empty!", Toast.LENGTH_SHORT).show();
+                }else{
+                    AlertDialog alertDialog = new AlertDialog.Builder(AddContragentActivity.this).create();
+                    alertDialog.setTitle("Confirm");
+                    alertDialog.setMessage("Confirm Add?");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.addContragent(input);
+                            db.close();
+                            dialog.dismiss();
+                            Intent intent = new Intent(getApplicationContext() ,ContragentsActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    alertDialog.show();
+
+                }
+
+
+
+            }
+        });
+
+    }
+
+    //using for logo at top right corner
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+}

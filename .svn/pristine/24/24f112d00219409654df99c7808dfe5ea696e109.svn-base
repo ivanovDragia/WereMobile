@@ -1,0 +1,246 @@
+package com.leetsoft.weremobile.database;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Georgi Shukov on 23.11.2020 г..
+ */
+public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "database_were_mobile";
+
+    //table PRODUCTS
+    private static final String TABLE_PRODUCTS = "products";
+    private static final String PRODUCTS_ID = "id";
+    private static final String PRODUCTS_NAME = "name";
+    private static final String PRODUCTS_QUANTITY = "quantity";
+    private static final String PRODUCTS_PRICE = "price";
+    private static final String PRODUCTS_PRODUCT_NUMBER = "product_number";
+
+    //table LOTS
+    private static final String TABLE_LOTS = "lots";
+    private static final String LOTS_ID = "id";
+    private static final String LOTS_LOT_NUMBER = "lot_number";
+    private static final String LOTS_PRODUCT_ID = "product_id";
+    private static final String LOTS_QUANTITY = "quantity";
+    private static final String LOTS_EXPIRATION_DATE = "expiration_date";
+
+    //table CONTRAGENTS
+    private static final String TABLE_CONTRAGENTS = "contragents";
+    private static final String CONTRAGENTS_ID = "id";
+    private static final String CONTRAGENTS_NAME = "name";
+    private static final String CONTRAGENTS_BULSTAT = "bulstat";
+    private static final String CONTRAGENTS_VAT_NUMBER = "VAT_number";
+    private static final String CONTRAGENTS_CITY = "city";
+    private static final String CONTRAGENTS_ADDRESS = "address";
+    private static final String CONTRAGENTS_MRP = "MRP";
+    private static final String CONTRAGENTS_PHONE_NUMBER = "phone_number";
+
+    //table DOCUMENTS
+    private static final String TABLE_DOCUMENTS = "documents";
+    private static final String DOCUMENTS_ID = "id";
+    private static final String DOCUMENTS_SOURCE_ID = "source_id";
+    private static final String DOCUMENTS_DESTINATION_ID = "destination_id";
+    private static final String DOCUMENTS_DOCUMENT_NUMBER = "document_number";
+    private static final String DOCUMENTS_DATE = "date";
+
+    //table DOCUMENT_ROWS
+    private static final String TABLE_DOCUMENT_ROWS = "document_rows";
+    private static final String DOCUMENT_ROWS_ID = "id";
+    private static final String DOCUMENT_ROWS_PRODUCT_ID = "product_id";
+    private static final String DOCUMENT_ROWS_LOT_ID = "lot_id";
+    private static final String DOCUMENT_ROWS_QUANTITY = "quantity";
+    private static final String DOCUMENT_ROWS_SUM = "sum";
+    private static final String DOCUMENT_ROWS_DOCUMENT_ID = "document_id";
+
+    //table SETTINGS
+    private static final String TABLE_SETTINGS = "settings";
+    private static final String SETTINGS_ID = "id";
+    private static final String SETTINGS_NAME = "name";
+    private static final String SETTINGS_VALUE = "value";
+    private static final String SETTINGS_DESCRIPTION = "description";
+
+
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        //create table PRODUCTS
+        String CREATE_PRODUCTS_TABLE = "CREATE TABLE " + TABLE_PRODUCTS + "(" +
+                PRODUCTS_ID + " INTEGER PRIMARY KEY," + PRODUCTS_NAME + " VARCHAR," +
+                PRODUCTS_QUANTITY + " DOUBLE," + PRODUCTS_PRICE + " DOUBLE," + PRODUCTS_PRODUCT_NUMBER + " VARCHAR" + ")";
+
+        //create table LOTS
+        String CREATE_LOTS_TABLE = "CREATE TABLE " + TABLE_LOTS + "(" +
+                LOTS_ID + " INTEGER PRIMARY KEY," + LOTS_PRODUCT_ID + " INTEGER," +
+                LOTS_QUANTITY + " DOUBLE," + LOTS_EXPIRATION_DATE + " DATETIME," + LOTS_LOT_NUMBER + " VARCHAR," + "FOREIGN KEY(" + LOTS_PRODUCT_ID + ")" +
+                " REFERENCES " + TABLE_PRODUCTS + "(" + PRODUCTS_ID + ")" + ")";
+
+        //create table CONTRAGENTS
+        String CREATE_CONTRAGENTS_TABLE = "CREATE TABLE " + TABLE_CONTRAGENTS + "(" +
+                CONTRAGENTS_ID + " INTEGER PRIMARY KEY," + CONTRAGENTS_NAME + " VARCHAR," +
+                CONTRAGENTS_BULSTAT + " VARCHAR," + CONTRAGENTS_VAT_NUMBER + " VARCHAR," + CONTRAGENTS_CITY + " VARCHAR," +
+                CONTRAGENTS_ADDRESS + " VARCHAR," + CONTRAGENTS_MRP + " VARCHAR," + CONTRAGENTS_PHONE_NUMBER + " VARCHAR" + ")";
+
+        //create table DOCUMENTS
+        String CREATE_DOCUMENTS_TABLE = "CREATE TABLE " + TABLE_DOCUMENTS + "(" +
+                DOCUMENTS_ID + " INTEGER PRIMARY KEY," + DOCUMENTS_SOURCE_ID + " INTEGER," +
+                DOCUMENTS_DESTINATION_ID + " INTEGER," + DOCUMENTS_DOCUMENT_NUMBER + " INTEGER," + DOCUMENTS_DATE + " DATE" + ")";
+
+        //create table DOCUMENT_ROWS
+        String CREATE_DOCUMENT_ROWS_TABLE = "CREATE TABLE " + TABLE_DOCUMENT_ROWS + "(" +
+                DOCUMENT_ROWS_ID + " INTEGER PRIMARY KEY," + DOCUMENT_ROWS_PRODUCT_ID + " INTEGER," +
+                DOCUMENT_ROWS_LOT_ID + " INTEGER," + DOCUMENT_ROWS_QUANTITY + " DOUBLE," + DOCUMENT_ROWS_SUM + " DOUBLE," +
+                DOCUMENT_ROWS_DOCUMENT_ID + " INTEGER" + ")";
+
+        //create table SETTINGS
+        String CREATE_SETTINGS_TABLE = "CREATE TABLE " + TABLE_SETTINGS + "(" +
+                SETTINGS_ID + " INTEGER PRIMARY KEY," + SETTINGS_NAME + " VARCHAR," +
+                SETTINGS_VALUE + " VARCHAR," + SETTINGS_DESCRIPTION + " VARCHAR" + ")";
+
+
+        db.execSQL(CREATE_PRODUCTS_TABLE);
+        db.execSQL(CREATE_LOTS_TABLE);
+        db.execSQL(CREATE_CONTRAGENTS_TABLE);
+        db.execSQL(CREATE_DOCUMENTS_TABLE);
+        db.execSQL(CREATE_DOCUMENT_ROWS_TABLE);
+        db.execSQL(CREATE_SETTINGS_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTRAGENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCUMENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCUMENT_ROWS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETTINGS);
+
+        onCreate(db);
+    }
+
+    //table PRODUCTS
+    public void addProduct(Products product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PRODUCTS_NAME, product.getName());
+        values.put(PRODUCTS_QUANTITY, product.getQuantity());
+        values.put(PRODUCTS_PRICE, product.getPrice());
+        values.put(PRODUCTS_PRODUCT_NUMBER, product.getProduct_number());
+
+        db.insert(TABLE_PRODUCTS, null, values);
+        db.close();
+    }
+
+    public ArrayList<Products> getAllProducts() {
+        ArrayList<Products> productsList = new ArrayList<>();
+
+        String selectQuery = "SELECT *FROM " + TABLE_PRODUCTS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Products product = new Products();
+                product.setId(Integer.parseInt(cursor.getString(0)));
+                product.setName(cursor.getString(1));
+                product.setQuantity(cursor.getDouble(2));
+                product.setPrice(cursor.getDouble(3));
+                product.setProduct_number(cursor.getString(4));
+
+                productsList.add(product);
+            } while (cursor.moveToNext());
+        }
+
+        return productsList;
+    }
+
+    public int updateProduct(Products product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PRODUCTS_NAME, product.getName());
+        values.put(PRODUCTS_QUANTITY, product.getQuantity());
+        values.put(PRODUCTS_PRICE, product.getPrice());
+        values.put(PRODUCTS_PRODUCT_NUMBER, product.getProduct_number());
+
+        return db.update(TABLE_PRODUCTS, values, PRODUCTS_ID + "=?",
+                new String[]{String.valueOf(product.getId())});
+    }
+
+    public void deleteProduct(Products product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PRODUCTS, PRODUCTS_ID + "=?",
+                new String[]{String.valueOf(product.getId())});
+        db.close();
+    }
+
+    //table SETTINGS
+    public void addSetting(Settings setting) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(SETTINGS_NAME, setting.getName());
+        values.put(SETTINGS_VALUE, setting.getValue());
+        values.put(SETTINGS_DESCRIPTION, setting.getDescription());
+
+        db.insert(TABLE_SETTINGS, null, values);
+        db.close();
+    }
+
+    public ArrayList<Settings> getAllSettings() {
+        ArrayList<Settings> settingsList = new ArrayList<>();
+
+        String selectQuery = "SELECT *FROM " + TABLE_SETTINGS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Settings setting = new Settings();
+                setting.setId(Integer.parseInt(cursor.getString(0)));
+                setting.setName(cursor.getString(1));
+                setting.setValue(cursor.getString(2));
+                setting.setDescription(cursor.getString(3));
+
+
+                settingsList.add(setting);
+            } while (cursor.moveToNext());
+        }
+
+        return settingsList;
+    }
+
+    public int updateSetting(Settings setting) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(SETTINGS_NAME, setting.getName());
+        values.put(SETTINGS_VALUE, setting.getValue());
+        values.put(SETTINGS_DESCRIPTION, setting.getDescription());
+
+        return db.update(TABLE_SETTINGS, values, SETTINGS_ID + "=?",
+                new String[]{String.valueOf(setting.getId())});
+    }
+
+    public void deleteSetting(Settings setting) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_SETTINGS, SETTINGS_ID + "=?",
+                new String[]{String.valueOf(setting.getId())});
+        db.close();
+    }
+
+}

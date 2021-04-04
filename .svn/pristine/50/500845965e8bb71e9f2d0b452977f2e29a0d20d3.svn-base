@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.leetsoft.weremobile">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WereMobile">
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="Menu"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ProductsActivity"
+            android:label="Products"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LotsActivity"
+            android:label="Lots"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"  />
+        <activity
+            android:name=".ContragentsActivity"
+            android:label="Contragents"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"  />
+        <activity
+            android:name=".DocumentsActivity"
+            android:label="Documents"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateDocumentActivity"
+            android:label="Create Document"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SyncActivity"
+            android:label="Sync"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".AddContragentActivity"
+            android:label="AddContragent"
+            android:parentActivityName=".ContragentsActivity"
+            android:screenOrientation="portrait"
+            />
+
+    </application>
+
+</manifest>

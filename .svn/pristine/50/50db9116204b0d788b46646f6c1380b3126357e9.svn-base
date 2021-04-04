@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_blue_background"
+    android:padding="50dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/menu_layout"
+        android:src="@drawable/wolf_menu_logo"
+        android:contentDescription="@string/logo" />
+
+    <LinearLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/products"
+            android:onClick="productsOnClick"/>
+
+        <Button
+            android:id="@+id/btnLots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lots"
+            android:onClick="lotsOnClick"/>
+
+        <Button
+            android:id="@+id/btnContragents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contragents"
+            android:onClick="contragentsOnClick"/>
+
+        <Button
+            android:id="@+id/btnDocuments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/documents"
+            android:onClick="documentsOnClick"/>
+
+        <Button
+            android:id="@+id/btnCreateDocuments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_document"
+            android:onClick="createDocumentOnClick"/>
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings"
+            android:onClick="settingsOnClick"/>
+
+        <Button
+            android:id="@+id/btnSync"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sync"
+            android:onClick="syncOnClick"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,77 @@
+package com.leetsoft.weremobile.adapters;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.leetsoft.weremobile.R;
+import com.leetsoft.weremobile.SettingsActivity;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.Settings;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomSettingsAdapter extends ArrayAdapter<Settings> {
+    private Context sContext;
+    private List<Settings> settingsList=new ArrayList<>();
+
+    DatabaseHelper db = new DatabaseHelper(getContext());
+
+
+    public CustomSettingsAdapter(@NonNull Context context, ArrayList<Settings> list) {
+        super(context, 0, list);
+        sContext=context;
+        settingsList=list;
+
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+        View listItem=convertView;
+        if(listItem==null)
+            listItem= LayoutInflater.from(sContext).inflate(R.layout.custom_settings_row,parent,false);
+
+        Settings currentSettings =settingsList.get(position);
+
+        TextView name=listItem.findViewById(R.id.nameTextView);
+        name.setText(currentSettings.getName());
+
+        TextView value=listItem.findViewById(R.id.valueTextView);
+        value.setText(currentSettings.getValue());
+
+        TextView description=listItem.findViewById(R.id.descriptionTextView);
+        description.setText(currentSettings.getDescription());
+
+        Button deleteButton=listItem.findViewById(R.id.buttonDelete);
+        Button editButton=listItem.findViewById(R.id.buttonEdit);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.deleteSetting(new Settings(currentSettings.getId(),currentSettings.getName(),currentSettings.getValue(),currentSettings.getDescription()));
+                //Toast.makeText(ShowDeleteActivity.this,"Task deleted successfully" + nameString+" "+dateString, Toast.LENGTH_SHORT).show();
+
+                db.close();
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        return listItem;
+    }
+}

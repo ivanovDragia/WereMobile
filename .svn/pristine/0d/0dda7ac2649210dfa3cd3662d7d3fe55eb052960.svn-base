@@ -1,0 +1,79 @@
+package com.leetsoft.weremobile;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.leetsoft.weremobile.background.FetchDataFromProductsBackground;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+/**
+ * Created by Georgi Shukov on 20.11.2020 г..
+ */
+public class SyncActivity extends AppCompatActivity {
+
+    public static TextView fetchedDataTV;
+    private Button btnSync;
+    DatabaseHelper db = new DatabaseHelper(this);
+
+    public static boolean productSyncSuccess = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sync);
+
+        //Shared Pref instance
+        SharedPreferences sharedPreferences = getSharedPreferences("LastSync", MODE_PRIVATE);
+
+        //widgets
+        fetchedDataTV = findViewById(R.id.fetchedData);
+        btnSync = findViewById(R.id.btnSync);
+
+        //get value for last sync and set it
+        String lastSync = sharedPreferences.getString("lastSync", "");
+    }
+
+    //using for logo at top right corner
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    //onCLick button
+    public void syncOnClick(View view) {
+        FetchDataFromProductsBackground process = new FetchDataFromProductsBackground(db);
+        process.execute();
+
+        setLastSync();
+    }
+
+    //format date and return formated date as String
+    private String formatDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+        return currentDateandTime;
+    }
+
+
+    //set to lastSyncTV date
+    private void setLastSync() {
+        //Shared Pref instance
+        SharedPreferences sharedPreferences = getSharedPreferences("LastSync", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String date = formatDate();
+        editor.putString("lastSync", date);
+        editor.commit();
+    }
+}

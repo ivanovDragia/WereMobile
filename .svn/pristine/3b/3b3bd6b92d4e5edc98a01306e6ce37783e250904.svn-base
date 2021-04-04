@@ -1,0 +1,71 @@
+package com.leetsoft.weremobile;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.SearchView;
+
+import com.leetsoft.weremobile.adapters.DocumentAdapter;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.Documents;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Georgi Shukov on 20.11.2020 г..
+ */
+public class DocumentsActivity extends AppCompatActivity {
+    private static final String TAG = "DocumentsActivity";
+
+    DatabaseHelper db = new DatabaseHelper(this);
+
+    List<Documents> documentsList = new ArrayList<>();
+
+    SearchView searchView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_documents);
+        Log.d(TAG, "onCreate: started.");
+
+        documentsList = db.getAllDocuments();
+
+        searchView = findViewById(R.id.documentSearchView);
+
+        RecyclerView documentsRecyclerView = findViewById(R.id.documents_recycler_view);
+        DocumentAdapter adapter = new DocumentAdapter(this,documentsList);
+        documentsRecyclerView.setAdapter(adapter);
+        documentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if ( TextUtils.isEmpty ( newText ) ) {
+                    adapter.getFilter().filter("");
+                } else {
+                    adapter.getFilter().filter(newText);
+                }
+                return true;
+            }
+        });
+    }
+
+    //using for logo at top right corner
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+}

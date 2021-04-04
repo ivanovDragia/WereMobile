@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context=".DocumentInformationActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentsInformationRowSpinnerTextView"
+        android:text="@string/lot_id"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:padding="5dp"/>
+
+    <Spinner
+        android:id="@+id/documentsInformationRowSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentsInformationRowQuantity"
+        android:text="@string/quantity"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:padding="5dp"/>
+
+    <EditText
+        android:id="@+id/editTextDocumentsInforatmionSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+
+    <Button
+        android:id="@+id/btnEditDocumentRowInformationDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/edit"
+        android:textAlignment="center" />
+
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

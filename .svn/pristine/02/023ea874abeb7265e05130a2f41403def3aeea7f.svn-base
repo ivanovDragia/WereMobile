@@ -1,0 +1,90 @@
+package com.leetsoft.weremobile.background;
+
+import android.os.AsyncTask;
+
+import com.leetsoft.weremobile.database.Contragents;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.Settings;
+
+import org.json.JSONArray;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Georgi Shukov on 11.2.2021 г..
+ */
+public class SendDataToContragentsBackground extends AsyncTask<Void, Void, Void> {
+
+    DatabaseHelper db;
+    List<Contragents> contragentsList;
+    List<Contragents> contragentsForAddAndUpdate;
+    String ip = "";
+    String port = "";
+    List<Settings> settingsList;
+
+
+    public SendDataToContragentsBackground(DatabaseHelper db) {
+        this.db = db;
+        contragentsList = new ArrayList<>();
+        contragentsForAddAndUpdate = new ArrayList<>();
+        contragentsList = db.getAllContragents();
+        settingsList = new ArrayList<>();
+        settingsList = db.getAllSettings();
+        for (Settings setting : settingsList) {
+            if (setting.getName().toLowerCase().trim().equals("ip")) {
+                ip = setting.getValue().trim();
+            }
+            if (setting.getName().toLowerCase().trim().equals("port")) {
+                port = setting.getValue().trim();
+            }
+        }
+
+    }
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+        for (Contragents contragent :
+                contragentsList) {
+            if(!contragent.isIs_synced()){
+                contragentsForAddAndUpdate.add(contragent);
+            }
+        }
+        OutputStream out = null;
+
+        for (Contragents contragent:
+             contragentsForAddAndUpdate) {
+        }
+
+       /* try {
+            URL url = new URL("http://" + ip + ":" + port + "/AddContragent?name="+name+"&bulstat="+bulstat+"&vatnumber="+vatnumber+"&city="+city+"&address="+address+"&mrp="+mrp+"&phonenumber="+phonenumber+"&id="+id);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            out = new BufferedOutputStream(urlConnection.getOutputStream());
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            writer.write(data);
+            writer.flush();
+            writer.close();
+            out.close();
+
+            urlConnection.connect();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }*/
+
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        FetchDataFromContragentsBackground processContragents = new FetchDataFromContragentsBackground(db);
+        processContragents.execute();
+    }
+}

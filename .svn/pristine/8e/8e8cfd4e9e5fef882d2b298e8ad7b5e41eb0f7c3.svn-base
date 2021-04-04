@@ -1,0 +1,24 @@
+package com.leetsoft.weremobile.background;
+
+import android.os.AsyncTask;
+import android.view.View;
+
+import com.leetsoft.weremobile.SyncActivity;
+
+/**
+ * Created by Georgi Shukov on 22.2.2021 г..
+ */
+public class PreExecuteBackground  extends AsyncTask<String, String, String> {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        SyncActivity.progressBar.setVisibility(View.VISIBLE);
+        SyncActivity.btnFullSync.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected String doInBackground(String... strings) {
+        return null;
+    }
+}

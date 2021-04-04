@@ -1,0 +1,96 @@
+package com.leetsoft.weremobile.adapters;
+
+
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.leetsoft.weremobile.R;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.DocumentRows;
+import com.leetsoft.weremobile.database.Products;
+import com.leetsoft.weremobile.util.DataUtil;
+
+import java.util.List;
+
+/**
+ * Created by Georgi Shukov on 13.1.2021 г..
+ */
+public class DocumentRowsAdapterNoBTN extends RecyclerView.Adapter<DocumentRowsAdapterNoBTN.ViewHolder>{
+    private static final String TAG = "DocumentRowsAdapterNoBT";
+    Context context;
+    List<DocumentRows> documentRowsList;
+    List<Products> productsList;
+
+    DatabaseHelper db;
+
+    public DocumentRowsAdapterNoBTN(Context context, List<DocumentRows> documentRowsList) {
+        this.context = context;
+        this.documentRowsList = documentRowsList;
+
+        db = new DatabaseHelper(context);
+        productsList = db.getAllProducts();
+    }
+
+    @NonNull
+    @Override
+    public DocumentRowsAdapterNoBTN.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: started");
+
+        context = parent.getContext();
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.nobtn_document_row_recycler_layout, parent, false);
+        DocumentRowsAdapterNoBTN.ViewHolder holder = new DocumentRowsAdapterNoBTN.ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull DocumentRowsAdapterNoBTN.ViewHolder holder, int position) {
+        DocumentRows row = documentRowsList.get(position);
+
+        //get product name by product id
+        int productID = row.getProduct_id();
+
+        DataUtil dataUtil = new DataUtil();
+        String productName = dataUtil.getProductName(productID,productsList);
+
+        holder.documentRowProductIDTextView.setText(productName);
+        holder.documentRowLotIDTextView.setText(String.valueOf(row.getLot_id()));
+        holder.documentRowQuantityTextView.setText(String.valueOf(row.getQuantity()));
+        holder.documentRowSumTextView.setText(String.valueOf(row.getSum()));
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView documentRowProductIDTextView;
+        TextView documentRowLotIDTextView;
+        TextView documentRowQuantityTextView;
+        TextView documentRowSumTextView;
+
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            documentRowProductIDTextView = itemView.findViewById(R.id.documentRowProductIDTextView);
+            documentRowLotIDTextView = itemView.findViewById(R.id.documentRowLotIDTextView);
+            documentRowQuantityTextView = itemView.findViewById(R.id.documentRowQuantityTextView);
+            documentRowSumTextView = itemView.findViewById(R.id.documentRowSumTextView);
+
+
+
+        }
+
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return documentRowsList.size();
+    }
+
+}

@@ -1,0 +1,264 @@
+package com.leetsoft.weremobile;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.leetsoft.weremobile.adapters.DocumentRowsAdapter;
+import com.leetsoft.weremobile.database.Contragents;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.DocumentRows;
+import com.leetsoft.weremobile.database.Documents;
+import com.leetsoft.weremobile.database.Lots;
+import com.leetsoft.weremobile.database.Products;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Created by Georgi Shukov on 20.11.2020 г..
+ */
+
+public class CreateDocumentActivity extends AppCompatActivity {
+
+    DatabaseHelper db = new DatabaseHelper(this);
+
+    private Spinner supplierSpinner, destinationSpinner;
+    private Button btnSave, btnAddRow;
+
+    private List<String> contragentsNameList = new ArrayList<>();
+    private List<Contragents> contragentsList = new ArrayList<>();
+
+    private List<String> productsNameList = new ArrayList<>();
+    private List<Products> productsList = new ArrayList<>();
+
+    private List<String> lotsStringList = new ArrayList<>();
+    private List<Lots> lotsList = new ArrayList<>();
+
+    private List<String> lotIdValues = new ArrayList<>();
+    private List<DocumentRows> documentRows = new ArrayList<>();
+
+    private int documentID = 0;
+    private int productID = 0;
+
+    DocumentRowsAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_document);
+
+        supplierSpinner = findViewById(R.id.supplierSpinner);
+        destinationSpinner = findViewById(R.id.destinationSpinner);
+        btnSave = findViewById(R.id.btnSave);
+        btnAddRow = findViewById(R.id.btnAddRow);
+
+
+        contragentsList = db.getAllContragents();
+
+        for (Contragents contragent : contragentsList) {
+            contragentsNameList.add(contragent.getName());
+        }
+
+        productsList = db.getAllProducts();
+
+        for (Products product : productsList) {
+            productsNameList.add(product.getName());
+        }
+
+        lotsList = db.getAllLots();
+
+        documentID = getDocumentNumber();
+
+        addItemsOnSupplierSpinner();
+        addItemsOnDestinationSpinner();
+
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Documents document = new Documents();
+                int supplierID = getSupplierId();
+                int destinationID = getDestinationId();
+                Date date = new Date();
+
+
+                document.setSource_id(supplierID);
+                document.setDestination_id(destinationID);
+                document.setDate(date);
+                document.setDocument_number(documentID);
+
+                db.addDocument(document);
+
+                Toast.makeText(CreateDocumentActivity.this,
+                        "Document saved in database with number " + document.getDocument_number(),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        btnAddRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddRowDialog();
+                RecyclerView recyclerView = findViewById(R.id.document_row_recycler_view);
+                adapter = new DocumentRowsAdapter(getParent(), documentRows);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getParent()));
+            }
+        });
+    }
+
+    private int getDocumentNumber() {
+        int i = new Random().nextInt(900000) + 100000;
+        return i;
+    }
+
+    private int getSupplierId() {
+        int id = 0;
+        for (Contragents contragent : contragentsList) {
+            if (contragent.getName().trim().equals(supplierSpinner.getSelectedItem().toString())) {
+                id = contragent.getId();
+            }
+        }
+        return id;
+    }
+
+    private int getDestinationId() {
+        int id = 0;
+        for (Contragents contragent : contragentsList) {
+            if (contragent.getName().trim().equals(destinationSpinner.getSelectedItem().toString())) {
+                id = contragent.getId();
+            }
+        }
+        return id;
+    }
+
+    //using for logo at top right corner
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public void addItemsOnDestinationSpinner() {
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, contragentsNameList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        destinationSpinner.setAdapter(dataAdapter);
+    }
+
+    public void addItemsOnSupplierSpinner() {
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, contragentsNameList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        supplierSpinner.setAdapter(dataAdapter);
+    }
+
+    private void showAddRowDialog() {
+        final Dialog dialog = new Dialog(CreateDocumentActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_document_row_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+
+        final Spinner lotSpinner = dialog.findViewById(R.id.lotSpinner);
+        final Spinner productSpinner = dialog.findViewById(R.id.productSpinner);
+        final Button btnAddRowDialog = dialog.findViewById(R.id.btnAddRowDialog);
+        final EditText quantityEditText = dialog.findViewById(R.id.quantityEditText);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, productsNameList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        productSpinner.setAdapter(dataAdapter);
+
+        ArrayAdapter<String> dataLotAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, lotsStringList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lotSpinner.setAdapter(dataLotAdapter);
+        lotSpinner.setId(0);
+
+        productSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                lotsStringList.clear();
+                lotIdValues.clear();
+
+
+                for (Products product : productsList) {
+                    if (product.getName().trim().equals(productSpinner.getSelectedItem().toString())) {
+                        productID = product.getId();
+                    }
+                }
+
+                for (Lots lot : lotsList) {
+                    if (productID == lot.getProduct_id()) {
+                        lotsStringList.add("LN: " + lot.getLot_number() + " Quantity: " + lot.getQuantity());
+                        lotIdValues.add(String.valueOf(lot.getId()));
+                    }
+                }
+                // SubCategories
+                dataLotAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+
+
+        btnAddRowDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String quantityStr = quantityEditText.getText().toString();
+                double quantity = Double.parseDouble(quantityStr);
+
+                DocumentRows row = new DocumentRows();
+                row.setDocument_id(documentID);
+                row.setQuantity(quantity);
+                row.setProduct_id(productID);
+                String lot_id = lotIdValues.get(lotSpinner.getSelectedItemPosition());
+                row.setLot_id(Integer.parseInt(lot_id));
+                double price = 0;
+                for (Products product : productsList) {
+                    if (product.getId() == productID) {
+                        price = product.getPrice();
+                    }
+                }
+                row.setSum(quantity * price);
+
+                db.addDocumentRow(row);
+                updateRows(documentID);
+                dialog.dismiss();
+                adapter.notifyDataSetChanged();
+            }
+        });
+        dialog.show();
+    }
+
+    public void updateRows(int id) {
+        documentRows = db.getAllDocumentRows(id);
+    }
+
+}

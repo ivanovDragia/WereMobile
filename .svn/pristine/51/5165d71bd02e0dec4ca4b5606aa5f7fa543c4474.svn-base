@@ -1,0 +1,67 @@
+package com.leetsoft.weremobile;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.SearchView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.leetsoft.weremobile.adapters.DocumentAdapter;
+import com.leetsoft.weremobile.database.Contragents;
+import com.leetsoft.weremobile.database.DatabaseHelper;
+import com.leetsoft.weremobile.database.Products;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class ProductsAddBarcodeActivity extends AppCompatActivity {
+    private static final String TAG = "PrBarcodeActivity";
+
+    int productID;
+
+    TextView nameTV;
+    TextView quantityTV;
+    TextView priceTV;
+    TextView productNumberTV;
+
+    DatabaseHelper db = new DatabaseHelper(this);
+
+    ArrayList<Products> lookupArray=new ArrayList<>();
+    Products product;
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.products_add_barcode_layout);
+        Log.d(TAG, "onCreate: started.");
+
+        Bundle bundle=getIntent().getExtras();
+        productID=bundle.getInt("id");
+
+        lookupArray=db.getAllProducts();
+
+        for(int i=0;i<lookupArray.size();i++){
+            if(lookupArray.get(i).getId()==productID){
+                product=lookupArray.get(i);
+            }
+        }
+
+        nameTV=findViewById(R.id.ProductsAddBarcodeNameTF);
+        quantityTV=findViewById(R.id.ProductsAddBarcodeQuantityTF);
+        priceTV=findViewById(R.id.ProductsAddBarcodePriceTF);
+        productNumberTV=findViewById(R.id.ProductsAddBarcodeNumberTF);
+
+        nameTV.setText(product.getName());
+        quantityTV.setText(String.valueOf(product.getQuantity()));
+        priceTV.setText(String.valueOf(product.getPrice()));
+        productNumberTV.setText(product.getProduct_number());
+
+    }
+}

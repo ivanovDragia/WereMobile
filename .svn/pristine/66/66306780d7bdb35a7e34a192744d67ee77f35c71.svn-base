@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context=".DocumentsActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/productSpinnerTextView"
+        android:text="Supplier"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:padding="5dp"/>
+
+    <Spinner
+        android:id="@+id/documentsEditSupplierSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lotSpinnerTextView"
+        android:text="Destination"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:padding="5dp"/>
+
+    <Spinner
+        android:id="@+id/documentsEditDestinationSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"/>
+
+
+    <Button
+        android:id="@+id/btnEditDocumentDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Edit"
+        android:textAlignment="center" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

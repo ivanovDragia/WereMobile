@@ -1,0 +1,72 @@
+package com.leetsoft.weremobile.database;
+
+import java.sql.Date;
+
+/**
+ * Created by Georgi Shukov on 23.11.2020 г..
+ */
+public class Documents {
+    int id;
+    int source_id;
+    int destination_id;
+    int document_number;
+    Date date;
+
+    public Documents() {
+    }
+
+    public Documents(int source_id, int destination_id, int document_number, Date date) {
+        this.source_id = source_id;
+        this.destination_id = destination_id;
+        this.document_number = document_number;
+        this.date = date;
+    }
+
+    public Documents(int id, int source_id, int destination_id, int document_number, Date date) {
+        this.id = id;
+        this.source_id = source_id;
+        this.destination_id = destination_id;
+        this.document_number = document_number;
+        this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getSource_id() {
+        return source_id;
+    }
+
+    public void setSource_id(int source_id) {
+        this.source_id = source_id;
+    }
+
+    public int getDestination_id() {
+        return destination_id;
+    }
+
+    public void setDestination_id(int destination_id) {
+        this.destination_id = destination_id;
+    }
+
+    public int getDocument_number() {
+        return document_number;
+    }
+
+    public void setDocument_number(int document_number) {
+        this.document_number = document_number;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+}

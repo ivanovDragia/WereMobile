@@ -1,0 +1,108 @@
+package com.leetsoft.weremobile;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+/**
+ * Created by Georgi Shukov on 20.11.2020 г..
+ */
+public class SyncActivity extends AppCompatActivity {
+
+    private TextView lastSyncTV;
+    private Button btnSync;
+    private ProgressBar progressBar;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sync);
+
+        //Shared Pref instance
+        SharedPreferences sharedPreferences = getSharedPreferences("LastSync", MODE_PRIVATE);
+
+        //widgets
+        lastSyncTV = findViewById(R.id.lastSyncTextView);
+        btnSync = findViewById(R.id.btnSync);
+        progressBar = findViewById(R.id.syncProgressBar);
+
+        //get value for last sync and set it
+        String lastSync = sharedPreferences.getString("lastSync", "");
+        lastSyncTV.setText(lastSync);
+    }
+
+    //using for logo at top right corner
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    //onCLick button
+    public void syncOnClick(View view) {
+        showProgress();
+    }
+
+    //format date and return formated date as String
+    private String formatDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+        return currentDateandTime;
+    }
+
+    //show progress at progress bar
+    private void showProgress() {
+        int count = 10;
+        boolean isDone = false;
+        Thread syncThread = new Thread() {
+            public void run() {
+                try {
+                    for (int i = 0; i < count; i++) {
+                        sleep(300);
+                        progressBar.setProgress(i * 10);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    progressBar.setProgress(100);
+                    lastSyncTV.post(new Runnable() {
+                        public void run() {
+                            setLastSync();
+                        }
+                    });
+                }
+            }
+        };
+        syncThread.start();
+
+    }
+
+    //set to lastSyncTV date
+    private void setLastSync() {
+        //Shared Pref instance
+        SharedPreferences sharedPreferences = getSharedPreferences("LastSync", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String date = formatDate();
+        editor.putString("lastSync", date);
+        editor.commit();
+        lastSyncTV.setText(date);
+    }
+}

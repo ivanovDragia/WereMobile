@@ -1,0 +1,12 @@
+package com.leetsoft.weremobile.interfaces;
+
+import com.leetsoft.weremobile.database.DocumentRows;
+
+/**
+ * Created by Georgi Shukov on 14.1.2021 г..
+ */
+public interface OnCreateDocumentRowButtonClickListener {
+    public void onDeleteClicked(int id, DocumentRows row);
+    public void updateQuantity(DocumentRows row);
+    public void onEdidClicked(DocumentRows row, int position);
+}

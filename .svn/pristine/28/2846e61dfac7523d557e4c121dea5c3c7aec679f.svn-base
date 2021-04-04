@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.leetsoft.weremobile">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WereMobile"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ScanCodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.WereMobile.NoActionBar" />
+        <activity
+            android:name=".DocumentInformationActivity"
+            android:label="Document"
+            android:parentActivityName=".DocumentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="Menu"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.WereMobile.NoActionBar" />
+        <activity
+            android:name=".ProductsActivity"
+            android:label="Products"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LotsActivity"
+            android:label="Lots"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContragentsActivity"
+            android:label="Contragents"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DocumentsActivity"
+            android:label="Documents"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateDocumentActivity"
+            android:label="@string/noText"
+            android:theme="@style/Theme.WereMobile.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SyncActivity"
+            android:label="Sync"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddContragentActivity"
+            android:label="AddContragent"
+            android:parentActivityName=".ContragentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EditContragentActivity"
+            android:label="EditContragent"
+            android:parentActivityName=".ContragentsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ProductsAddBarcodeActivity"
+            android:label="AddProductBarcode"
+            android:parentActivityName=".ProductsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ProductsAddBarcodeScanActivity"
+            android:label="AddProductScanBarcode"
+            android:parentActivityName=".ProductsAddBarcodeActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

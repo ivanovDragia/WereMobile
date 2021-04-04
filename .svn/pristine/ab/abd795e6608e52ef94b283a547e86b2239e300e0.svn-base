@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_columnWeight="5"
+    android:layout_column="3"
+    android:layout_row="4"
+    android:background="@drawable/border"
+    android:layout_marginTop="5dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowProductIDLabel"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:text="Product Name"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_columnWeight="3"
+        android:layout_gravity="fill"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowProductIDTextView"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="3"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowLotIDLabel"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:text="Lot ID"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="2"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowLotIDTextView"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="3"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowQuantityLable"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:text="Quantity"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="2"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowQuantityTextView"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:layout_row="2"
+        android:layout_column="1"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="3"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowSumLable"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:text="Sum"
+        android:layout_row="3"
+        android:layout_column="0"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowSumTextView"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:layout_row="3"
+        android:layout_column="1"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="2"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowDocumentIdLable"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:text="Document ID"
+        android:layout_row="4"
+        android:layout_column="0"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/documentRowDocumentIdTextView"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:layout_row="4"
+        android:layout_column="1"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="2"
+        android:textAlignment="center"
+        tools:ignore="RtlCompat"
+        android:textColor="@color/black"/>
+
+    <ImageButton
+        android:id="@+id/buttonEditRow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/edit"
+        android:text="Edit"
+        android:layout_row="5"
+        android:layout_column="0"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="2"/>
+
+    <ImageButton
+        android:id="@+id/buttonDeleteRow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/delete"
+        android:text="Delete"
+        android:layout_row="5"
+        android:layout_column="1"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="2" />
+
+
+</GridLayout>
